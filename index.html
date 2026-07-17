@@ -68,6 +68,25 @@ h2{
 Clean Slate
 </header>
 
+<div class="card">
+
+<h2>Matches Prediction</h2>
+
+<select id="matchType">
+<option>Matches Even</option>
+<option>Matches Odd</option>
+<option>Matches Differ</option>
+<option>Over/Under</option>
+</select>
+
+<button onclick="predictMatch()">
+Predict Match
+</button>
+
+<div id="matchResult"></div>
+
+</div>
+    
 <div class="container">
 
 <div class="card">
@@ -109,6 +128,13 @@ function analyze(){
 
 document.getElementById("result").innerHTML =
 "Market analyzed successfully. Live market connection will be added next.";
+
+} 
+
+function predictMatch(){
+
+document.getElementById("matchResult").innerHTML =
+"Prediction generated. Advanced market analysis will be added next.";
 
 }
 
