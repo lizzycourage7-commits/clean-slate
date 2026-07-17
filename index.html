@@ -20,10 +20,23 @@ body{
 }
 
 header{
-    background:#0f172a;
-    padding:25px;
+    background:linear-gradient(135deg,#0f172a,#1e293b);
+    padding:30px 20px;
     text-align:center;
-    border-bottom:1px solid #1e293b;
+    border-bottom:1px solid #334155;
+    border-radius:0 0 25px 25px;
+}
+
+header h1{
+    margin:0;
+    color:#38bdf8;
+    font-size:34px;
+    letter-spacing:1px;
+}
+
+header p{
+    color:#cbd5e1;
+    margin-top:10px;
 }
 
 header h1{
@@ -43,11 +56,12 @@ header p{
 }
 
 .card{
-    background:#111827;
-    padding:20px;
-    border-radius:18px;
+    background:linear-gradient(145deg,#111827,#1e293b);
+    padding:22px;
+    border-radius:20px;
     margin-bottom:20px;
-    box-shadow:0 0 15px rgba(0,0,0,0.3);
+    border:1px solid #334155;
+    box-shadow:0 8px 25px rgba(0,0,0,0.35);
 }
 
 h2{
@@ -70,10 +84,18 @@ select{
 }
 
 button{
-    background:#38bdf8;
+    background:linear-gradient(135deg,#38bdf8,#0ea5e9);
     color:#020617;
     font-weight:bold;
     cursor:pointer;
+    font-size:18px;
+    box-shadow:0 5px 15px rgba(56,189,248,0.3);
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.03);
+    opacity:0.9;
 }
 
 button:hover{
@@ -82,10 +104,29 @@ button:hover{
 
 .result{
     margin-top:20px;
-    padding:15px;
-    background:#1e293b;
-    border-radius:12px;
+    padding:20px;
+    background:linear-gradient(135deg,#0f172a,#1e293b);
+    border-radius:18px;
     text-align:center;
+    border:1px solid #38bdf8;
+    animation:fadeIn 0.5s ease;
+}
+
+.result p:first-child{
+    font-size:28px;
+    font-weight:bold;
+    color:#38bdf8;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
 }
 
 .confidence{
@@ -166,6 +207,10 @@ Waiting for analysis...
 <p class="confidence" id="confidence">
 Confidence: --
 </p>
+
+<button onclick="resetPrediction()">
+New Prediction
+</button>
 
 </div>
 
@@ -266,6 +311,19 @@ document.getElementById("insight").innerHTML =
 "Hot Digit: " + hotDigit + "<br>" +
 "Cold Digit: " + coldDigit + "<br>" +
 "Sample digits analyzed: " + digits.join(", ");
+
+}
+
+function resetPrediction(){
+
+document.getElementById("prediction").innerHTML =
+"Waiting for analysis...";
+
+document.getElementById("confidence").innerHTML =
+"Confidence: --";
+
+document.getElementById("insight").innerHTML =
+"Select a market and prediction type to generate analysis.";
 
 }
 
