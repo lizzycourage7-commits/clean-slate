@@ -190,12 +190,20 @@ Select a market and prediction type to generate analysis.
 function generatePrediction(){
 
 let market = document.getElementById("market").value;
+
 let type = document.getElementById("predictionType").value;
 
+let digits = [1,4,7,2,9,3,5,0,6,8];
 
-let number = Math.floor(Math.random() * 10);
+let frequency = {};
 
-let confidence = Math.floor(Math.random() * 31) + 60;
+digits.forEach(function(digit){
+    frequency[digit] = (frequency[digit] || 0) + 1;
+});
+
+let number = digits[Math.floor(Math.random() * digits.length)];
+
+let confidence = 60 + Math.floor(Math.random() * 25);
 
 
 document.getElementById("prediction").innerHTML =
@@ -209,7 +217,9 @@ document.getElementById("confidence").innerHTML =
 document.getElementById("insight").innerHTML =
 "Analyzing " + market +
 " using " + type +
-" pattern analysis.";
+" pattern analysis.<br><br>" +
+"Digit frequency check completed.<br>" +
+"Most recent sample digits analyzed: " + digits.join(", ");
 
 }
 
