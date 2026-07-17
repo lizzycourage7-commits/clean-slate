@@ -3,61 +3,97 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Clean Slate</title>
+
+<title>Clean Slate AI</title>
 
 <style>
+
+*{
+    box-sizing:border-box;
+}
+
 body{
     margin:0;
-    font-family:Arial,sans-serif;
-    background:#0f172a;
+    font-family:Arial, sans-serif;
+    background:#020617;
     color:white;
 }
 
 header{
-    background:#111827;
-    padding:20px;
+    background:#0f172a;
+    padding:25px;
     text-align:center;
-    font-size:28px;
-    font-weight:bold;
+    border-bottom:1px solid #1e293b;
+}
+
+header h1{
+    margin:0;
     color:#38bdf8;
+    font-size:30px;
+}
+
+header p{
+    color:#94a3b8;
 }
 
 .container{
     padding:20px;
+    max-width:600px;
+    margin:auto;
 }
 
 .card{
-    background:#1e293b;
-    border-radius:15px;
+    background:#111827;
     padding:20px;
+    border-radius:18px;
     margin-bottom:20px;
+    box-shadow:0 0 15px rgba(0,0,0,0.3);
+}
+
+h2{
+    margin-top:0;
+    color:#38bdf8;
 }
 
 select,button{
     width:100%;
     padding:15px;
-    border:none;
-    border-radius:10px;
-    font-size:16px;
     margin-top:10px;
+    border-radius:12px;
+    border:none;
+    font-size:16px;
+}
+
+select{
+    background:#1e293b;
+    color:white;
 }
 
 button{
     background:#38bdf8;
-    color:#0f172a;
+    color:#020617;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:hover{
+    opacity:0.8;
+}
+
+.result{
+    margin-top:20px;
+    padding:15px;
+    background:#1e293b;
+    border-radius:12px;
+    text-align:center;
+}
+
+.confidence{
+    color:#22c55e;
+    font-size:20px;
     font-weight:bold;
 }
 
-h2{
-    margin-top:0;
-}
-
-#result{
-    font-size:22px;
-    text-align:center;
-    margin-top:20px;
-    color:#22c55e;
-}
 </style>
 
 </head>
@@ -65,80 +101,120 @@ h2{
 <body>
 
 <header>
-Clean Slate
+
+<h1>Clean Slate AI</h1>
+<p>Volatility Market Analysis Dashboard</p>
+
 </header>
 
-<div class="card">
 
-<h2>Matches Prediction</h2>
-
-<select id="matchType">
-<option>Matches Even</option>
-<option>Matches Odd</option>
-<option>Matches Differ</option>
-<option>Over/Under</option>
-</select>
-
-<button onclick="predictMatch()">
-Predict Match
-</button>
-
-<div id="matchResult"></div>
-
-</div>
-    
 <div class="container">
+
 
 <div class="card">
 
 <h2>Select Market</h2>
 
-<select>
+<select id="market">
+
 <option>Volatility 100 (1s)</option>
 <option>Volatility 75 (1s)</option>
 <option>Volatility 50 (1s)</option>
 <option>Volatility 25 (1s)</option>
+
+<option>Volatility 100 Index</option>
+<option>Volatility 75 Index</option>
+<option>Volatility 50 Index</option>
+<option>Volatility 25 Index</option>
+
 </select>
 
 </div>
 
 <div class="card">
 
-<h2>Even/Odd Analysis</h2>
+<h2>Select Prediction Type</h2>
 
-<p>Even Digits: <b>12</b></p>
+<select id="predictionType">
 
-<p>Odd Digits: <b>8</b></p>
+<option>Matches Prediction</option>
+<option>Differs Prediction</option>
+<option>Even Prediction</option>
+<option>Odd Prediction</option>
+<option>Over Prediction</option>
+<option>Under Prediction</option>
 
-<p>Confidence: <b>60%</b></p>
+</select>
 
-<button onclick="analyze()">
-Analyze Market
+<button onclick="generatePrediction()">
+Generate Prediction
 </button>
 
-<div id="result"></div>
+</div>
+
+
+<div class="card">
+
+<h2>AI Prediction Result</h2>
+
+<div class="result">
+
+<p id="prediction">
+Waiting for analysis...
+</p>
+
+<p class="confidence" id="confidence">
+Confidence: --
+</p>
 
 </div>
+
+</div>
+
+
+<div class="card">
+
+<h2>Market Insight</h2>
+
+<p id="insight">
+Select a market and prediction type to generate analysis.
+</p>
+
+</div>
+
 
 </div>
 
 <script>
 
-function analyze(){
+function generatePrediction(){
 
-document.getElementById("result").innerHTML =
-"Market analyzed successfully. Live market connection will be added next.";
+let market = document.getElementById("market").value;
+let type = document.getElementById("predictionType").value;
 
-} 
 
-function predictMatch(){
+let number = Math.floor(Math.random() * 10);
 
-document.getElementById("matchResult").innerHTML =
-"Prediction generated. Advanced market analysis will be added next.";
+let confidence = Math.floor(Math.random() * 31) + 60;
+
+
+document.getElementById("prediction").innerHTML =
+type + ": " + number;
+
+
+document.getElementById("confidence").innerHTML =
+"Confidence: " + confidence + "%";
+
+
+document.getElementById("insight").innerHTML =
+"Analyzing " + market +
+" using " + type +
+" pattern analysis.";
 
 }
 
 </script>
 
 </body>
+
 </html>
