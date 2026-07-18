@@ -257,22 +257,28 @@ digits.forEach(function(digit){
     frequency[digit] = (frequency[digit] || 0) + 1;
 });
 
-let hotDigit = Object.keys(frequency).reduce((a,b) =>
-frequency[a] > frequency[b] ? a : b
-);
+let sortedDigits = Object.keys(frequency).sort(function(a,b){
+    return frequency[b] - frequency[a];
+});
 
-let coldDigit = Object.keys(frequency).reduce((a,b) =>
-frequency[a] < frequency[b] ? a : b
-);
+let hotDigits = sortedDigits.slice(0,3);
 
-let number = digits[Math.floor(Math.random() * digits.length)];
+let coldDigits = sortedDigits.slice(-3);
 
 if(type === "Matches Prediction"){
-    number = hotDigit;
+
+number = hotDigits[
+Math.floor(Math.random() * hotDigits.length)
+];
+
 }
 
 if(type === "Differs Prediction"){
-    number = coldDigit;
+
+number = coldDigits[
+Math.floor(Math.random() * coldDigits.length)
+];
+
 }
 
 if(type === "Even Prediction"){
@@ -319,8 +325,8 @@ document.getElementById("insight").innerHTML =
 " using " + type +
 " pattern analysis.<br><br>" +
 "Digit frequency check completed.<br>" +
-"Hot Digit: " + hotDigit + "<br>" +
-"Cold Digit: " + coldDigit + "<br>" +
+"Hot Digits: " + hotDigits.join(", ") + "<br>" +
+"Cold Digits: " + coldDigits.join(", ") + "<br>" +
 "Sample digits analyzed: " + digits.join(", ");
 
 }, 2000);
