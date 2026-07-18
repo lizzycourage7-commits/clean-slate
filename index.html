@@ -218,16 +218,54 @@ Generate Prediction
 
 <div class="result">
 
-<p id="prediction">
-Waiting for analysis...
-</p>
+<h1 id="prediction"
+style="
+font-size:70px;
+text-align:center;
+color:#38bdf8;
+margin:10px 0;
+">
+--
+</h1>
 
-<p class="confidence" id="confidence">
+<h2 id="signal"
+style="
+text-align:center;
+color:#22c55e;
+">
+Ready
+</h2>
+
+<h3 id="countdown"
+style="
+text-align:center;
+color:#facc15;
+font-size:32px;
+">
+</h3>
+
+<div style="
+width:100%;
+height:12px;
+background:#1e293b;
+border-radius:20px;
+overflow:hidden;
+margin-top:15px;
+">
+
+<div id="progressBar" style="
+width:0%;
+height:100%;
+background:linear-gradient(90deg,#22c55e,#38bdf8);
+transition:width 1s linear;
+">
+</div>
+
+</div>
+
+<p class="confidence" id="confidence"
+style="text-align:center;">
 Confidence: --
-</p>
-    
-<p id="signal">
-Signal: Waiting...
 </p>
     
 <button onclick="resetPrediction(); generatePrediction();">
@@ -352,27 +390,64 @@ document.getElementById("insight").innerHTML =
     
 function generatePrediction(){
 
-document.getElementById("prediction").innerHTML =
-"🔄 Scanning market ticks...";
+document.getElementById("progressBar").style.width = "0%";
 
- 
+document.getElementById("prediction").innerHTML = "--";
 
-document.getElementById("confidence").innerHTML =
-"Analyzing...";
+document.getElementById("confidence").innerHTML = "";
 
-document.getElementById("insight").innerHTML =
-"AI is calculating probability...";
+document.getElementById("signal").innerHTML =
+"Analyzing Market...";
 
-setTimeout(function(){
+document.getElementById("countdown").innerHTML = "5";
 
-document.getElementById("prediction").innerHTML =
-"📊 Detecting patterns...";
+let seconds = 5;
 
-document.getElementById("confidence").innerHTML =
-"Calculating probability...";
+let countdownTimer = setInterval(function(){
 
-document.getElementById("insight").innerHTML =
-"Comparing recent digit behavior...";
+    seconds--;
+
+    document.getElementById("countdown").innerHTML = seconds;
+
+    document.getElementById("progressBar").style.width =
+    ((5 - seconds) * 20) + "%";
+    
+    if(seconds <= 0){
+
+        clearInterval(countdownTimer);
+
+        document.getElementById("progressBar").style.width = "100%";
+        
+        document.getElementById("countdown").innerHTML = seconds;
+
+switch(seconds){
+
+case 4:
+document.getElementById("signal").innerHTML = "Scanning Live Market...";
+break;
+
+case 3:
+document.getElementById("signal").innerHTML = "Collecting Tick Data...";
+break;
+
+case 2:
+document.getElementById("signal").innerHTML = "Analyzing Digit Frequency...";
+break;
+
+case 1:
+document.getElementById("signal").innerHTML = "Calculating Best Prediction...";
+break;
+
+case 0:
+document.getElementById("signal").innerHTML = "Analysis Complete";
+break;
+
+}
+
+        document.getElementById("signal").innerHTML =
+        "Analysis Complete";
+
+    }
 
 },1000);
 
@@ -480,40 +555,31 @@ if(confidence > 95){
 }
 
 
-document.getElementById("prediction").innerHTML =
-type + ": " + number;
+setTimeout(function(){
 
+    document.getElementById("prediction").innerHTML =
+    number;
 
-if(confidence >= 75){
+    document.getElementById("signal").innerHTML =
+    "BEST PREDICTION";
 
-let seconds = 5;
+    document.getElementById("confidence").innerHTML =
+    "Confidence: " + confidence + "%";
 
-document.getElementById("signal").innerHTML =
-"🟢 SIGNAL READY - Enter within " + seconds + " seconds";
+},5000);
 
-let timer = setInterval(function(){
+setTimeout(function(){
 
-seconds--;
+    document.getElementById("prediction").innerHTML = "--";
 
-document.getElementById("signal").innerHTML =
-"🟢 SIGNAL READY - " + seconds + " seconds remaining";
+    document.getElementById("signal").innerHTML =
+    "Ready";
 
-if(seconds <= 0){
-clearInterval(timer);
+    document.getElementById("confidence").innerHTML =
+    "Confidence: --";
 
-document.getElementById("signal").innerHTML =
-"⏳ SIGNAL EXPIRED - Analyze again";
-}
+},9000);
 
-},1000);
-
-}
-else{
-
-document.getElementById("signal").innerHTML =
-"🟡 SIGNAL: WAIT - Weak Pattern";
-
-}
 predictionHistory.unshift(
 type + ": " + number + " | Confidence: " + confidence + "%"
 );
