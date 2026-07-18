@@ -244,6 +244,7 @@ No predictions yet.
 const API_TOKEN = "pat_6a71012ddcb922c2db52bb4458b45cb986ca26e28ac58d44e9cba4d9841321c3";
 
 let predictionHistory = [];
+let liveDigits = [];
 
 const ws = new WebSocket(
   "wss://ws.derivws.com/websockets/v3?app_id=1089"
@@ -262,9 +263,21 @@ ws.addEventListener("open", function () {
 ws.addEventListener("message", function (event) {
     const data = JSON.parse(event.data);
     if (data.tick) {
-    document.getElementById("insight").innerHTML =
-        "Live Price: " + data.tick.quote;
+
+    const price = data.tick.quote.toString();
+
+    const lastDigit = Number(price.slice(-1));
+
+    liveDigits.push(lastDigit);
+
+    if (liveDigits.length > 100) {
+        liveDigits.shift();
     }
+
+    document.getElementById("insight").innerHTML =
+        "Live Price: " + price +
+        "<br>Collected Digits: " + liveDigits.length;
+}
 });
     
 function generatePrediction(){
@@ -299,7 +312,13 @@ let market = document.getElementById("market").value;
 
 let type = document.getElementById("predictionType").value;
 
-let digits = [3,7,1,9,3,5,7,2,8,3,6,1,4,7,0,9,5,3,2,7];
+if (liveDigits.length < 20) {
+    document.getElementById("prediction").innerHTML =
+        "Waiting for enough live market data...";
+    return;
+}
+
+let digits = [...liveDigits];
 
 let frequency = {};
 
@@ -319,17 +338,12 @@ let number;
 
 if(type === "Matches Prediction"){
 
-number = hotDigits[
-Math.floor(Math.random() * hotDigits.length)
-];
-
+number = hotDigits[0];
 }
 
 if(type === "Differs Prediction"){
 
-number = coldDigits[
-Math.floor(Math.random() * coldDigits.length)
-];
+number = coldDigits[0];
 
 }
 
@@ -381,7 +395,7 @@ if(predictionHistory.length > 5){
 
 document.getElementById("history").innerHTML =
 predictionHistory.join("<br><br>");
-
+console.log("Live Digits:", liveDigits);
 document.getElementById("insight").innerHTML =
 "Analyzing " + market +
 " using " + type +
