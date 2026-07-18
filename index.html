@@ -309,6 +309,16 @@ let hottestDigit = Object.keys(frequency).sort(function(a,b){
 if (liveDigits.length > maxTicks) {
     liveDigits.shift();
 }
+        let frequency = {};
+
+liveDigits.forEach(function(digit){
+    frequency[digit] = (frequency[digit] || 0) + 1;
+});
+
+let hottestDigit = Object.keys(frequency).sort(function(a,b){
+    return frequency[b] - frequency[a];
+})[0];
+        
     let counts = {};
 
 for(let i = 0; i <= 9; i++){
@@ -323,7 +333,7 @@ document.getElementById("insight").innerHTML =
     "Live Price: " + price +
 "<br>Collected Digits: " + liveDigits.length +
 "<br>🔥 Hottest Digit: " + hottestDigit +
-" " (" + (frequency[hottestDigit] || 0) + " times)" +
+"  (" + (frequency[hottestDigit] || 0) + " times)" +
     "<br><br>" +
     "Digit Frequency:<br>" +
     "0: " + counts[0] + " | " +
@@ -371,7 +381,7 @@ let market = document.getElementById("market").value;
 
 let type = document.getElementById("predictionType").value;
 
-if (liveDigits.length < 1) {
+if (liveDigits.length < 10) {
     document.getElementById("prediction").innerHTML =
         "Waiting for enough live market data...";
     return;
@@ -382,8 +392,6 @@ const selectedTicks = Number(document.getElementById("tickCount").value);
 let digits = liveDigits.slice(-selectedTicks);
 
 let frequency = {};
-
-liveDigits.push(lastDigit);
 
 digits.forEach(function(digit){
     frequency[digit] = (frequency[digit] || 0) + 1;
@@ -451,7 +459,11 @@ if(type === "Under Prediction"){
     number = underNumbers[Math.floor(Math.random() * underNumbers.length)];
 }
 
-let topScore = Math.max(...Object.values(scores || {0:0}));
+let topScore = 0;
+
+if(typeof scores !== "undefined"){
+    topScore = Math.max(...Object.values(scores));
+}
 
 let confidence = Math.min(
     95,
