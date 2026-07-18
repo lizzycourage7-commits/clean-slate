@@ -323,20 +323,20 @@ document.getElementById("insight").innerHTML =
 "Cold Digit: " + coldDigit + "<br>" +
 "Sample digits analyzed: " + digits.join(", ");
 
+}, 2000);
+
 }
 
 function resetPrediction(){
 
-document.getElementById("insight").innerHTML =
-"Analyzing " + market +
-" using " + type +
-" pattern analysis.<br><br>" +
-"Digit frequency check completed.<br>" +
-"Hot Digit: " + hotDigit + "<br>" +
-"Cold Digit: " + coldDigit + "<br>" +
-"Sample digits analyzed: " + digits.join(", ");
+document.getElementById("prediction").innerHTML =
+"Waiting for analysis...";
 
-}, 2000);
+document.getElementById("confidence").innerHTML =
+"Confidence: --";
+
+document.getElementById("insight").innerHTML =
+"Select a market and prediction type to generate analysis.";
 
 }
 
