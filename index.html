@@ -198,10 +198,16 @@ Generate Prediction
 <h2>Tick Sample Size</h2>
 
 <select id="tickCount">
-    <option value="100">100 Ticks</option>
-    <option value="200">200 Ticks</option>
-    <option value="500" selected>500 Ticks</option>
-    <option value="1000">1000 Ticks</option>
+    <option value="1">1 Tick</option>
+    <option value="2">2 Ticks</option>
+    <option value="3">3 Ticks</option>
+    <option value="4">4 Ticks</option>
+    <option value="5">5 Ticks</option>
+    <option value="6">6 Ticks</option>
+    <option value="7">7 Ticks</option>
+    <option value="8">8 Ticks</option>
+    <option value="9">9 Ticks</option>
+    <option value="10" selected>10 Ticks</option>
 </select>
 
 </div>
@@ -325,13 +331,15 @@ let market = document.getElementById("market").value;
 
 let type = document.getElementById("predictionType").value;
 
-if (liveDigits.length < 20) {
+if (liveDigits.length < 1) {
     document.getElementById("prediction").innerHTML =
         "Waiting for enough live market data...";
     return;
 }
 
-let digits = [...liveDigits];
+const selectedTicks = Number(document.getElementById("tickCount").value);
+
+let digits = liveDigits.slice(-selectedTicks);
 
 let frequency = {};
 
