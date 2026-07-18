@@ -280,6 +280,7 @@ ws.addEventListener("open", function () {
 });
 ws.addEventListener("message", function (event) {
     const data = JSON.parse(event.data);
+    document.getElementById("insight").innerHTML = JSON.stringify(data);
     if (data.tick) {
 
     const price = data.tick.quote.toString();
