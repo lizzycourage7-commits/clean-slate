@@ -234,6 +234,17 @@ Select a market and prediction type to generate analysis.
 
 function generatePrediction(){
 
+document.getElementById("prediction").innerHTML =
+"🔄 Analyzing market...";
+
+document.getElementById("confidence").innerHTML =
+"Processing...";
+
+document.getElementById("insight").innerHTML =
+"AI is studying market patterns...";
+
+setTimeout(function(){
+
 let market = document.getElementById("market").value;
 
 let type = document.getElementById("predictionType").value;
@@ -316,14 +327,16 @@ document.getElementById("insight").innerHTML =
 
 function resetPrediction(){
 
-document.getElementById("prediction").innerHTML =
-"Waiting for analysis...";
-
-document.getElementById("confidence").innerHTML =
-"Confidence: --";
-
 document.getElementById("insight").innerHTML =
-"Select a market and prediction type to generate analysis.";
+"Analyzing " + market +
+" using " + type +
+" pattern analysis.<br><br>" +
+"Digit frequency check completed.<br>" +
+"Hot Digit: " + hotDigit + "<br>" +
+"Cold Digit: " + coldDigit + "<br>" +
+"Sample digits analyzed: " + digits.join(", ");
+
+}, 2000);
 
 }
 
