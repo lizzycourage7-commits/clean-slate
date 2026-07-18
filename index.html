@@ -241,8 +241,32 @@ No predictions yet.
 
 <script>
 
+const API_TOKEN = "pat_6a71012ddcb922c2db52bb4458b45cb986ca26e28ac58d44e9cba4d9841321c3";
+
 let predictionHistory = [];
 
+const ws = new WebSocket(
+  "wss://ws.derivws.com/websockets/v3?app_id=1089"
+);
+    
+ws.addEventListener("open", function () {
+    ws.send(JSON.stringify({
+        authorize: API_TOKEN
+    }));
+
+    ws.send(JSON.stringify({
+    ticks: "R_100",
+    subscribe: 1
+    }));
+});
+ws.addEventListener("message", function (event) {
+    const data = JSON.parse(event.data);
+    if (data.tick) {
+    document.getElementById("insight").innerHTML =
+        "Live Price: " + data.tick.quote;
+    }
+});
+    
 function generatePrediction(){
 
 document.getElementById("prediction").innerHTML =
