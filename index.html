@@ -208,7 +208,7 @@ Waiting for analysis...
 Confidence: --
 </p>
 
-<button onclick="resetPrediction()">
+<button onclick="resetPrediction(); generatePrediction();">
 New Prediction
 </button>
 
@@ -373,6 +373,8 @@ document.getElementById("insight").innerHTML =
 
 function resetPrediction(){
 
+predictionHistory = [];
+    
 document.getElementById("prediction").innerHTML =
 "Waiting for analysis...";
 
@@ -381,6 +383,9 @@ document.getElementById("confidence").innerHTML =
 
 document.getElementById("insight").innerHTML =
 "Select a market and prediction type to generate analysis.";
+
+document.getElementById("history").innerHTML =
+"No predictions yet.";
 
 }
 
