@@ -225,7 +225,11 @@ Waiting for analysis...
 <p class="confidence" id="confidence">
 Confidence: --
 </p>
-
+    
+<p id="signal">
+Signal: Waiting...
+</p>
+    
 <button onclick="resetPrediction(); generatePrediction();">
 New Prediction
 </button>
@@ -319,7 +323,7 @@ document.getElementById("insight").innerHTML =
     "Live Price: " + price +
 "<br>Collected Digits: " + liveDigits.length +
 "<br>🔥 Hottest Digit: " + hottestDigit +
-" (" + frequency[hottestDigit] + " times)"; +
+" " (" + (frequency[hottestDigit] || 0) + " times)" +
     "<br><br>" +
     "Digit Frequency:<br>" +
     "0: " + counts[0] + " | " +
@@ -378,6 +382,8 @@ const selectedTicks = Number(document.getElementById("tickCount").value);
 let digits = liveDigits.slice(-selectedTicks);
 
 let frequency = {};
+
+liveDigits.push(lastDigit);
 
 digits.forEach(function(digit){
     frequency[digit] = (frequency[digit] || 0) + 1;
