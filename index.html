@@ -235,13 +235,26 @@ Select a market and prediction type to generate analysis.
 function generatePrediction(){
 
 document.getElementById("prediction").innerHTML =
-"🔄 Analyzing market...";
+"🔄 Scanning market ticks...";
 
 document.getElementById("confidence").innerHTML =
-"Processing...";
+"Analyzing...";
 
 document.getElementById("insight").innerHTML =
-"AI is studying market patterns...";
+"AI is calculating probability...";
+
+setTimeout(function(){
+
+document.getElementById("prediction").innerHTML =
+"📊 Detecting patterns...";
+
+document.getElementById("confidence").innerHTML =
+"Calculating probability...";
+
+document.getElementById("insight").innerHTML =
+"Comparing recent digit behavior...";
+
+},1000);
 
 setTimeout(function(){
 
@@ -264,6 +277,8 @@ let sortedDigits = Object.keys(frequency).sort(function(a,b){
 let hotDigits = sortedDigits.slice(0,3);
 
 let coldDigits = sortedDigits.slice(-3);
+
+let number;
 
 if(type === "Matches Prediction"){
 
