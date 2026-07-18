@@ -280,6 +280,17 @@ ws.addEventListener("open", function () {
 });
 ws.addEventListener("message", function (event) {
     const data = JSON.parse(event.data);
+
+    let frequency = {};
+
+liveDigits.forEach(function(digit){
+    frequency[digit] = (frequency[digit] || 0) + 1;
+});
+
+let hottestDigit = Object.keys(frequency).sort(function(a,b){
+    return frequency[b] - frequency[a];
+})[0];
+    
     document.getElementById("insight").innerHTML = JSON.stringify(data);
     if (data.tick) {
 
@@ -294,9 +305,33 @@ ws.addEventListener("message", function (event) {
 if (liveDigits.length > maxTicks) {
     liveDigits.shift();
 }
-    document.getElementById("insight").innerHTML =
-        "Live Price: " + price +
-        "<br>Collected Digits: " + liveDigits.length;
+    let counts = {};
+
+for(let i = 0; i <= 9; i++){
+    counts[i] = 0;
+}
+
+liveDigits.forEach(function(digit){
+    counts[digit]++;
+});
+
+document.getElementById("insight").innerHTML =
+    "Live Price: " + price +
+"<br>Collected Digits: " + liveDigits.length +
+"<br>🔥 Hottest Digit: " + hottestDigit +
+" (" + frequency[hottestDigit] + " times)"; +
+    "<br><br>" +
+    "Digit Frequency:<br>" +
+    "0: " + counts[0] + " | " +
+    "1: " + counts[1] + " | " +
+    "2: " + counts[2] + " | " +
+    "3: " + counts[3] + "<br>" +
+    "4: " + counts[4] + " | " +
+    "5: " + counts[5] + " | " +
+    "6: " + counts[6] + "<br>" +
+    "7: " + counts[7] + " | " +
+    "8: " + counts[8] + " | " +
+    "9: " + counts[9];
 }
 });
     
@@ -360,9 +395,30 @@ let number;
 
 if(type === "Matches Prediction"){
 
-number = hotDigits[0];
+let scores = {};
+
+for(let i = 0; i <= 9; i++){
+    scores[i] = 0;
 }
 
+// Count frequency
+digits.forEach(function(digit){
+    scores[digit] += 2;
+});
+
+// Give extra weight to the most recent digits
+let recentDigits = digits.slice(-5);
+
+recentDigits.forEach(function(digit){
+    scores[digit] += 3;
+});
+
+// Find highest scoring digit
+number = Object.keys(scores).sort(function(a,b){
+    return scores[b] - scores[a];
+})[0];
+
+}
 if(type === "Differs Prediction"){
 
 number = coldDigits[0];
@@ -389,7 +445,12 @@ if(type === "Under Prediction"){
     number = underNumbers[Math.floor(Math.random() * underNumbers.length)];
 }
 
-let confidence = 60 + Math.floor(Math.random() * 30);
+let topScore = Math.max(...Object.values(scores || {0:0}));
+
+let confidence = Math.min(
+    95,
+    50 + (topScore * 5)
+);
 
 if(type === "Matches Prediction" || type === "Differs Prediction"){
     confidence += 5;
@@ -404,9 +465,36 @@ document.getElementById("prediction").innerHTML =
 type + ": " + number;
 
 
-document.getElementById("confidence").innerHTML =
-"Confidence: " + confidence + "%";
+if(confidence >= 75){
 
+let seconds = 5;
+
+document.getElementById("signal").innerHTML =
+"🟢 SIGNAL READY - Enter within " + seconds + " seconds";
+
+let timer = setInterval(function(){
+
+seconds--;
+
+document.getElementById("signal").innerHTML =
+"🟢 SIGNAL READY - " + seconds + " seconds remaining";
+
+if(seconds <= 0){
+clearInterval(timer);
+
+document.getElementById("signal").innerHTML =
+"⏳ SIGNAL EXPIRED - Analyze again";
+}
+
+},1000);
+
+}
+else{
+
+document.getElementById("signal").innerHTML =
+"🟡 SIGNAL: WAIT - Weak Pattern";
+
+}
 predictionHistory.unshift(
 type + ": " + number + " | Confidence: " + confidence + "%"
 );
